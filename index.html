@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/1677bbc0e1.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="music-player">
+            <nav>
+                <div class="circle">
+                    <i class="fa-solid fa-angle-left"></i>
+                </div>
+                <div class="circle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </nav>
+            <img src="Media/thumbnail.png" class="song-img">
+            <h1>Chaiyya Chaiyya</h1>
+            
+             <audio  id="song">
+                <source src="Media/Chaiyya Chaiyya.mp3" type="audio/mpeg">
+                <source src="Media/I Am the Best.mp3" type="audio/mpeg">
+                <source src="Media/Chaand Taare.mp3" type="audio/mpeg">
+                <source src="Media/Fan.mp3" type="audio/mpeg">
+             </audio>
+            <input type="range" value="0" id="progress">
+                <div class="controls">
+                    <div onclick="previousSong()"><i class="fa-solid fa-backward"></i></div>
+                    <div onclick="playPause()"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
+                    <div onclick="nextSong()"><i class="fa-solid fa-forward"></i></div>
+                </div>
+                   
+                        
+        </div>
+    </div>
+    <script>
+        let progress=document.getElementById("progress");
+         let song = document.getElementById("song");
+         let ctrlIcon = document.getElementById("ctrlIcon");
+        let currentSongIndex = 0;
+let songs = [
+    {
+        title: "Chaiyya Chaiyya",
+        file: "Media/Chaiyya Chaiyya.mp3"
+    },
+    {
+        title: "I Am the Best",
+        file: "Media/I Am the Best.mp3"
+    },
+         
+      {
+        title: "Chaand Taare",
+        file: "Media/Chaand Taare.mp3"
+    },
+
+      {
+        title: "Fan",
+        file: "Media/Fan.mp3"
+    }
+
+    
+];
+        
+        function playPause(){
+            if(ctrlIcon.classList.contains("fa-pause")){
+                song.pause(); 
+                ctrlIcon.classList.remove("fa-pause");
+                 ctrlIcon.classList.add("fa-play");
+            }
+            else{
+                song.play();
+                ctrlIcon.classList.add("fa-pause");
+                ctrlIcon.classList.remove("fa-play");
+            }
+        }
+
+          function playSong(index) {
+                song.src = songs[index].file;
+                document.querySelector(".song-img").src = "Media/thumbnail.png";
+                document.querySelector("h1").textContent = songs[index].title;
+                document.querySelector("p").textContent = songs[index].artist;
+                song.play();
+                ctrlIcon.classList.add("fa-pause");
+                ctrlIcon.classList.remove("fa-play");
+
+          }
+
+
+          function nextSong() {
+                currentSongIndex = (currentSongIndex + 1) % songs.length;
+                playSong(currentSongIndex);
+            }
+
+            function previousSong() {
+                currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+                playSong(currentSongIndex);
+            }
+
+         if(song.play()){
+            setInterval(()=>{
+                progress.value=song.currentTime;
+            },500);
+         }
+        progress.onchange=function(){
+            song.play();
+            song.currentTime=progress.value;
+             ctrlIcon.classList.add("fa-pause");
+                ctrlIcon.classList.remove("fa-play");
+        
+        }
+        
+    </script>
+</body>
+</html>
